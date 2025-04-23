@@ -1,5 +1,3 @@
-# File: dijkstra_spark.py
-
 from pyspark.sql import SparkSession
 from pyspark import SparkFiles
 import sys
@@ -22,11 +20,10 @@ def parse_edge(line):
         raise ValueError(f"Invalid edge format in line: {line}. Expected: u v weight")
 
 def run_dijkstra(sc, input_path, source=0):
-    # Ensure source is an integer
+    # Ensure source given by the submit command is an integer
     source = int(source)
     start_time = time.time()
 
-    # Resolve file path (supports --files)
     try:
         path = SparkFiles.get(input_path)
     except Exception:
@@ -34,7 +31,7 @@ def run_dijkstra(sc, input_path, source=0):
 
     print(f"Reading graph from {path}")
     
-    # Load lines, skip blanks
+    # Load each lines in the text file, skip blanks
     lines = sc.textFile(path).filter(lambda l: l.strip() != "")
     
     # Parse header
@@ -84,7 +81,7 @@ def run_dijkstra(sc, input_path, source=0):
             lambda x: x[1] < dist_bcast.value.get(x[0], INF)
         ).collect()
         
-        # Clear active nodes for next iteration
+        # Clear active nodes for next iteration to have fressh start
         active_nodes = set()
         
         # Update distances; track nodes that changed
@@ -99,14 +96,12 @@ def run_dijkstra(sc, input_path, source=0):
         
         print(f"Iteration {iteration}: {len(active_nodes)} active nodes")
         
-        # Early exit if no updates
         if not active_nodes:
             break
     
     end_time = time.time()
     print(f"Completed in {iteration} iterations, {end_time - start_time:.2f} seconds")
 
-    # Output results
     print("\nShortest distances from node", source)
     for node in range(num_nodes):
         dist = distances.get(node, INF)
