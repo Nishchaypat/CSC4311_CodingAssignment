@@ -6,10 +6,10 @@ This project implements Dijkstra's algorithm using Apache Spark to find the shor
 
 Before you begin, ensure you have the following prerequisites installed and configured:
 
-* An Azure Virtual Machine (VM) running Ubuntu 20.04 LTS or later.
+* An Azure Virtual Machine (VM) running Linux (ubuntu 20.04).
 * Java Development Kit (JDK) version 8 or higher.
-* Python version 3.7 or higher.
-* Apache Spark version 3.1.2 or higher.
+* Python version 3.10 or higher.
+* Apache Spark version 3.5.5.
 
 ## Installation and Setup Instructions
 
@@ -90,21 +90,11 @@ spark-shell
 Clone the project repository to your local machine or VM:
 
 ```bash
-# Replace 'yourusername' with the actual GitHub username
 git clone https://github.com/Nishchaypat/CSC4311_CodingAssignment.git
 cd spark-dijkstra
 ```
 
-### 2. Run the Application Locally
-
-You can run the Spark application locally using `spark-submit`. This is useful for testing on smaller datasets.
-
-```bash
-# Runs the Dijkstra algorithm on weighted_graph.txt starting from node 0
-spark-submit dijkstra_spark.py weighted_graph.txt 0
-```
-
-### 3. Run the Application on a Spark Cluster
+### 2. Run the Application on a Spark Cluster
 
 To run the application on a standalone Spark cluster, use `spark-submit` and specify the master node's URL. Ensure the graph file is accessible to all worker nodes, for example, by using the `--files` option.
 
@@ -122,8 +112,9 @@ The project repository has the following structure:
 
 ```
 spark-dijkstra/
-├── dijkstra_spark.py       # Main Spark application script implementing Dijkstra's algorithm
-├── weighted_graph.txt      # Example weighted graph data file for testing
-├── README.md               # This README file
-└── report.pdf              # Detailed implementation report (if applicable)
+├── dijkstra_spark.py
+├── weighted_graph.txt
+├── README.md             
+└── report.pdf             
+└── screenshots/            
 
