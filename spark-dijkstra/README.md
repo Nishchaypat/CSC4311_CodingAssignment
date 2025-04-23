@@ -7,6 +7,7 @@ This project implements Dijkstra's algorithm using Apache Spark to find the shor
 Before you begin, ensure you have the following prerequisites installed and configured:
 
 * An Azure Virtual Machine (VM) running Linux (ubuntu 20.04).
+* VM Size Standard B2s (2 vcpus, 4 GiB memory)
 * Java Development Kit (JDK) version 8 or higher.
 * Python version 3.10 or higher.
 * Apache Spark version 3.5.5.
@@ -19,17 +20,30 @@ Follow these steps to set up the environment on your Azure VM.
 
 If you don't have an Azure VM, create one using the Azure CLI:
 
+Example:
+
 ```bash
 az vm create \
-  --resource-group SparkAssignment \
-  --name spark-master \
+  --resource-group cloudclass \
+  --name node1 \
   --image UbuntuLTS \
   --admin-username azureuser \
   --generate-ssh-keys \
-  --size Standard_D4s_v3
+  --size Standard_B2s
 
 ```
+Configure Networking (Network Security Group - NSG)
+
+For Spark's standalone cluster and web UIs to work correctly, you need to open specific ports in the VM's Network Security Group (NSG).
+
+* `7077`: Spark Master communication port.
+* `8080`: Spark Master Web UI.
+* `4040`: Spark Application/Driver Web UI (when a job is running).
+* `22`: SSH (already open by default typically).
+
+
 Connect to your VM using SSH.
+
 
 ### 2. Install Java
 
