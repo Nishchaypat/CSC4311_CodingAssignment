@@ -20,8 +20,8 @@ def parse_edge(line):
         raise ValueError(f"Invalid edge format in line: {line}. Expected: u v weight")
 
 def run_dijkstra(sc, input_path, source=0):
-    # Ensure source given by the submit command is an integer
-    source = int(source)
+   
+    source = int(source)                 # Ensure source is an integer
     start_time = time.time()
 
     try:
@@ -31,10 +31,9 @@ def run_dijkstra(sc, input_path, source=0):
 
     print(f"Reading graph from {path}")
     
-    # Load each lines in the text file, skip blanks
-    lines = sc.textFile(path).filter(lambda l: l.strip() != "")
     
-    # Parse header
+    lines = sc.textFile(path).filter(lambda l: l.strip() != "")     # Load lines, skip blanks to get our inpiut datas
+    
     try:
         header = lines.first()
         num_nodes, num_edges = parse_header(header)
@@ -43,8 +42,8 @@ def run_dijkstra(sc, input_path, source=0):
         print(f"Error parsing header: {e}")
         sys.exit(1)
 
-    # Function to drop header in first partition
-    def drop_header(idx, iterator):
+    
+    def drop_header(idx, iterator):     # Function to drop header in first partition
         it = iter(iterator)
         if idx == 0:
             next(it, None)
@@ -67,8 +66,8 @@ def run_dijkstra(sc, input_path, source=0):
     iteration = 0
     while active_nodes:
         iteration += 1
-        # Broadcast current distances and active nodes
-        dist_bcast = sc.broadcast(distances)
+       
+        dist_bcast = sc.broadcast(distances)         # Broadcast current distances and active nodes
         active_bcast = sc.broadcast(active_nodes)
         
         # Only process edges from active nodes for better performance
@@ -81,17 +80,17 @@ def run_dijkstra(sc, input_path, source=0):
             lambda x: x[1] < dist_bcast.value.get(x[0], INF)
         ).collect()
         
-        # Clear active nodes for next iteration to have fressh start
+        # Clear active nodes for next iteration
         active_nodes = set()
         
-        # Update distances; track nodes that changed
+        # Update distances
         for node, new_dist in min_cands:
             if new_dist < distances.get(node, INF):
                 distances[node] = new_dist
                 active_nodes.add(node)  # Only process nodes with updated distances
         
-        # Clean up broadcast variables
-        dist_bcast.unpersist()
+       
+        dist_bcast.unpersist()          
         active_bcast.unpersist()
         
         print(f"Iteration {iteration}: {len(active_nodes)} active nodes")
@@ -102,7 +101,7 @@ def run_dijkstra(sc, input_path, source=0):
     end_time = time.time()
     print(f"Completed in {iteration} iterations, {end_time - start_time:.2f} seconds")
 
-    print("\nShortest distances from node", source)
+    print("Shortest distances from node", source)
     for node in range(num_nodes):
         dist = distances.get(node, INF)
         out = f"{dist:.2f}" if dist != INF else "INF"
@@ -110,7 +109,6 @@ def run_dijkstra(sc, input_path, source=0):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: spark-submit dijkstra_spark.py <input_file> [<source_node>]")
         sys.exit(1)
 
     input_file = sys.argv[1]
