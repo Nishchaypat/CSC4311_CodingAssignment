@@ -108,7 +108,7 @@ git clone https://github.com/Nishchaypat/CSC4311_CodingAssignment.git
 cd spark-dijkstra
 ```
 
-### 2. Run the Application on a Spark Cluster
+### 2. Run the Spark Cluster
 
 To run the application on a standalone Spark cluster, use `spark-submit` and specify the master node's URL. Ensure the graph file is accessible to all worker nodes, for example, by using the `--files` option.
 
@@ -120,7 +120,7 @@ spark-submit \
   dijkstra_spark.py weighted_graph.txt 0
 ```
 
-### 3. Run the Application in the REPL
+### 3. Run the Application/Code in the REPL
 
 Once we have the REPL opened using the PySpark command above we can use these two command to execute the code:
 
