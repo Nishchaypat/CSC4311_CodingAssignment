@@ -120,6 +120,15 @@ spark-submit \
   dijkstra_spark.py weighted_graph.txt 0
 ```
 
+### 3. Run the Application in the REPL
+
+Once we have the REPL opened using the PySpark command above we can use these two command to execute the code:
+
+```bash
+from dijkstra_spark import run_dijkstra
+run_dijkstra(sc, "weighted_graph.txt", 0)
+```
+
 ## File Structure
 
 The project repository has the following structure:
