@@ -20,7 +20,7 @@ def parse_edge(line):
         raise ValueError(f"Invalid edge format in line: {line}. Expected: u v weight")
 
 def run_dijkstra(sc, input_path, source=0):
-   
+
     source = int(source)                 # Ensure source is an integer
     start_time = time.time()
 
